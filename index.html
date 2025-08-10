@@ -39,50 +39,32 @@
     <style>
         .card-flip {
             perspective: 1000px;
-            display: inline-block; /* или flex-элемент */
         }
-        
-        .card-flip-front,
-        .card-flip-back {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            transform: translateZ(0);
-        }
-
 
         .card-flip-inner {
             position: relative;
             width: 100%;
             height: 100%;
-            transform-origin: center center;
-            will-change: transform;
-            transition: transform 0.7s;
             transform-style: preserve-3d;
+            transition: transform 0.6s ease;
         }
-        
-        .card-flip:hover .card-flip-inner {
+
+        .card-flip.flipped .card-flip-inner {
             transform: rotateY(180deg);
         }
-        
+
         .card-flip-front,
         .card-flip-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            -webkit-backface-visibility: hidden; /* Важно для Safari */
-            transform-style: preserve-3d;
         }
-        
+
         .card-flip-back {
             transform: rotateY(180deg);
         }
-        
-        /* Фикс для дрожания в Safari */
-        .card-flip {
-            -webkit-transform: translate3d(0,0,0);
-            transform: translate3d(0,0,0);
-        }
+
         .glow {
             box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
         }
@@ -193,90 +175,69 @@
 
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-dark/90 backdrop-blur-md border-b border-gray-800">
-    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-        <!-- Логотип слева -->
-        <a href="#" class="flex items-center gap-2 group">
-            <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <i class="fas fa-home text-white text-lg"></i>
+    <div class="container mx-auto px-2 py-2 flex justify-between items-center text-sm">
+        
+        <!-- Логотип -->
+        <a href="#" class="flex items-center gap-1 group">
+            <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                <i class="fas fa-home text-white text-sm"></i>
             </div>
-            <span class="text-xl font-bold text-white group-hover:text-primary transition">
+            <span class="font-bold text-white group-hover:text-primary transition">
                 SmartHome<span class="text-primary">Group</span>
             </span>
         </a>
 
-        <!-- Центральная навигация -->
-        <nav class="hidden md:flex items-center gap-8">
+        <!-- Навигация -->
+        <nav class="hidden md:flex items-center gap-4">
             <a href="#" class="text-gray-300 hover:text-primary transition">Главная</a>
-            
-            <!-- Выпадающее меню "Наши проекты" -->
             <div class="relative group">
                 <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
-                    Наши проекты
-                    <i class="fas fa-chevron-down text-xs"></i>
+                    Наши проекты <i class="fas fa-chevron-down text-[10px]"></i>
                 </button>
-                <div class="absolute left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Отели</a>
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Виллы</a>
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Квартиры</a>
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Концепты</a>
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Сценарии</a>
+                <div class="absolute left-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Отели</a>
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Виллы</a>
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Квартиры</a>
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Концепты</a>
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Сценарии</a>
                 </div>
             </div>
-            
-            <!-- Выпадающее меню "О компании" -->
             <div class="relative group">
                 <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
-                    О компании
-                    <i class="fas fa-chevron-down text-xs"></i>
+                    О компании <i class="fas fa-chevron-down text-[10px]"></i>
                 </button>
-                <div class="absolute left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">KNX Smart Home</a>
-                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Wi-Fi Smart Home</a>
+                <div class="absolute left-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">KNX Smart Home</a>
+                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Wi-Fi Smart Home</a>
                 </div>
             </div>
         </nav>
 
-        <!-- Правый блок (WhatsApp, Переводчик, Бургер) -->
-        <div class="flex items-center gap-4">
-            <!-- WhatsApp -->
-            <a href="#" class="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
-                <i class="fab fa-whatsapp text-xl"></i>
-                <span class="hidden md:inline">WhatsApp</span>
+        <!-- Правый блок -->
+        <div class="flex items-center gap-2">
+            <a href="#" class="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 rounded-lg transition">
+                <i class="fab fa-whatsapp text-base"></i>
+                <span class="hidden md:inline">WA</span>
             </a>
-
-            <!-- Переводчик -->
             <div class="relative group">
-                <button class="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
-                    <i class="fas fa-globe text-xl"></i>
-                    <span class="hidden md:inline">Язык</span>
+                <button class="flex items-center gap-1 px-2 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+                    <i class="fas fa-globe text-base"></i>
+                    <span class="hidden md:inline">Яз</span>
                 </button>
-                <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
-                        <span class="fi fi-ru"></span>
-                        <span>Русский</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
-                        <span class="fi fi-de"></span>
-                        <span>Deutsch</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
-                        <span class="fi fi-us"></span>
-                        <span>English</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
-                        <span class="fi fi-fr"></span>
-                        <span>Français</span>
-                    </a>
+                <div class="absolute right-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-ru"></span>Рус</a>
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-de"></span>De</a>
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-us"></span>En</a>
+                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-fr"></span>Fr</a>
                 </div>
             </div>
-
-            <!-- Бургер меню -->
             <button class="md:hidden text-gray-300 hover:text-primary transition">
-                <i class="fas fa-bars text-2xl"></i>
+                <i class="fas fa-bars text-xl"></i>
             </button>
         </div>
     </div>
 </header>
+
 
     <!-- Hero Section -->
     <section class="relative min-h-screen flex items-center overflow-hidden">
@@ -315,110 +276,109 @@
         </div>
     </section>
 
-    <!-- Наши услуги -->
     <section class="py-20 relative">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Наши услуги</h2>
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Наши услуги</h2>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Карточка 1: Smart Hotel System -->
-                <div class="card-flip h-[500px]">
-                    <div class="card-flip-inner w-full h-full">
-                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
-                            <div class="absolute inset-0 bg-[url('/1.jpg')] bg-cover bg-center"></div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-6">
-                                <h3 class="text-2xl font-bold mb-2">Smart Hotel System</h3>
-                                <p class="text-gray-300 mb-4">Под ключ</p>
-                                <p class="text-gray-400 mb-6">От плана отеля до реализации: электрика и дизайн-проект</p>
-                                <button class="w-full py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold hover:opacity-90 transition">
-                                    ОТЕЛЬ
-                                </button>
-                            </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Карточка 1 -->
+            <div class="card-flip h-[500px]">
+                <div class="card-flip-inner w-full h-full">
+                    <div class="card-flip-front relative rounded-2xl overflow-hidden border border-gray-700">
+                        <div class="absolute inset-0 bg-[url('/1.jpg')] bg-cover bg-center"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-2xl font-bold mb-2">Smart Hotel System</h3>
+                            <p class="text-gray-300 mb-4">Под ключ</p>
+                            <p class="text-gray-400 mb-6">От плана отеля до реализации: электрика и дизайн-проект</p>
+                            <button class="w-full py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold hover:opacity-90 transition">
+                                ОТЕЛЬ
+                            </button>
                         </div>
-                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-primary flex items-center justify-center p-6">
-                            <div class="text-center">
-                                <h3 class="text-2xl font-bold mb-4 text-primary">Smart Hotel System</h3>
-                                <ul class="space-y-2 text-gray-300 mb-6">
-                                    <li>• Автоматизация номеров</li>
-                                    <li>• Умное управление энергией</li>
-                                    <li>• Интегрированные системы безопасности</li>
-                                    <li>• Персонализированный сервис</li>
-                                </ul>
-                                <button class="px-6 py-3 bg-primary rounded-lg font-bold text-dark hover:bg-primary/90 transition">
-                                    Подробнее
-                                </button>
-                            </div>
+                    </div>
+                    <div class="card-flip-back absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-primary flex items-center justify-center p-6">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4 text-primary">Smart Hotel System</h3>
+                            <ul class="space-y-2 text-gray-300 mb-6">
+                                <li>• Автоматизация номеров</li>
+                                <li>• Умное управление энергией</li>
+                                <li>• Интегрированные системы безопасности</li>
+                                <li>• Персонализированный сервис</li>
+                            </ul>
+                            <button class="px-6 py-3 bg-primary rounded-lg font-bold text-dark hover:bg-primary/90 transition">
+                                Подробнее
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Карточка 2: Smart Villa System -->
-                <div class="card-flip h-[500px]">
-                    <div class="card-flip-inner w-full h-full">
-                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
-                            <div class="absolute inset-0 bg-[url('/2.jpg')] bg-cover bg-center"></div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-6">
-                                <h3 class="text-2xl font-bold mb-2">Smart Villa System</h3>
-                                <p class="text-gray-300 mb-4">Полное управление</p>
-                                <p class="text-gray-400 mb-6">Управляйте вашей виллой всегда с помощью телефона</p>
-                                <button class="w-full py-3 bg-gradient-to-r from-red-500 to-red-700 rounded-lg font-bold hover:opacity-90 transition">
-                                    ВИЛЛА
-                                </button>
-                            </div>
+            <!-- Карточка 2 -->
+            <div class="card-flip h-[500px]">
+                <div class="card-flip-inner w-full h-full">
+                    <div class="card-flip-front relative rounded-2xl overflow-hidden border border-gray-700">
+                        <div class="absolute inset-0 bg-[url('/2.jpg')] bg-cover bg-center"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-2xl font-bold mb-2">Smart Villa System</h3>
+                            <p class="text-gray-300 mb-4">Полное управление</p>
+                            <p class="text-gray-400 mb-6">Управляйте вашей виллой всегда с помощью телефона</p>
+                            <button class="w-full py-3 bg-gradient-to-r from-red-500 to-red-700 rounded-lg font-bold hover:opacity-90 transition">
+                                ВИЛЛА
+                            </button>
                         </div>
-                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-red-500 flex items-center justify-center p-6">
-                            <div class="text-center">
-                                <h3 class="text-2xl font-bold mb-4 text-red-400">Smart Villa System</h3>
-                                <ul class="space-y-2 text-gray-300 mb-6">
-                                    <li>• Управление климатом и светом</li>
-                                    <li>• Умные системы орошения</li>
-                                    <li>• Интеграция с бассейном и сауной</li>
-                                    <li>• Полная безопасность территории</li>
-                                </ul>
-                                <button class="px-6 py-3 bg-red-500 rounded-lg font-bold text-white hover:bg-red-600 transition">
-                                    Подробнее
-                                </button>
-                            </div>
+                    </div>
+                    <div class="card-flip-back absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-red-500 flex items-center justify-center p-6">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4 text-red-400">Smart Villa System</h3>
+                            <ul class="space-y-2 text-gray-300 mb-6">
+                                <li>• Управление климатом и светом</li>
+                                <li>• Умные системы орошения</li>
+                                <li>• Интеграция с бассейном и сауной</li>
+                                <li>• Полная безопасность территории</li>
+                            </ul>
+                            <button class="px-6 py-3 bg-red-500 rounded-lg font-bold text-white hover:bg-red-600 transition">
+                                Подробнее
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Карточка 3: Smart Home System -->
-                <div class="card-flip h-[500px]">
-                    <div class="card-flip-inner w-full h-full">
-                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
-                            <div class="absolute inset-0 bg-[url('/3.jpg')] bg-cover bg-center"></div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 right-0 p-6">
-                                <h3 class="text-2xl font-bold mb-2">Smart Home System</h3>
-                                <p class="text-gray-300 mb-4">Апартаменты</p>
-                                <p class="text-gray-400 mb-6">Управление и безопасность со смартфона</p>
-                                <button class="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-700 rounded-lg font-bold hover:opacity-90 transition">
-                                    КВАРТИРА
-                                </button>
-                            </div>
+            <!-- Карточка 3 -->
+            <div class="card-flip h-[500px]">
+                <div class="card-flip-inner w-full h-full">
+                    <div class="card-flip-front relative rounded-2xl overflow-hidden border border-gray-700">
+                        <div class="absolute inset-0 bg-[url('/3.jpg')] bg-cover bg-center"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <h3 class="text-2xl font-bold mb-2">Smart Home System</h3>
+                            <p class="text-gray-300 mb-4">Апартаменты</p>
+                            <p class="text-gray-400 mb-6">Управление и безопасность со смартфона</p>
+                            <button class="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-700 rounded-lg font-bold hover:opacity-90 transition">
+                                КВАРТИРА
+                            </button>
                         </div>
-                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-purple-500 flex items-center justify-center p-6">
-                            <div class="text-center">
-                                <h3 class="text-2xl font-bold mb-4 text-purple-400">Smart Home System</h3>
-                                <ul class="space-y-2 text-gray-300 mb-6">
-                                    <li>• Умное освещение и климат</li>
-                                    <li>• Голосовое управление</li>
-                                    <li>• Системы безопасности и видеонаблюдение</li>
-                                    <li>• Энергоэффективные решения</li>
-                                </ul>
-                                <button class="px-6 py-3 bg-purple-500 rounded-lg font-bold text-white hover:bg-purple-600 transition">
-                                    Подробнее
-                                </button>
-                            </div>
+                    </div>
+                    <div class="card-flip-back absolute top-0 left-0 w-full h-full bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-purple-500 flex items-center justify-center p-6">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-bold mb-4 text-purple-400">Smart Home System</h3>
+                            <ul class="space-y-2 text-gray-300 mb-6">
+                                <li>• Умное освещение и климат</li>
+                                <li>• Голосовое управление</li>
+                                <li>• Системы безопасности и видеонаблюдение</li>
+                                <li>• Энергоэффективные решения</li>
+                            </ul>
+                            <button class="px-6 py-3 bg-purple-500 rounded-lg font-bold text-white hover:bg-purple-600 transition">
+                                Подробнее
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Заказать систему -->
     <section class="py-20 bg-gradient-to-br from-gray-900 to-dark">
@@ -602,7 +562,7 @@
                             <i class="fab fa-facebook text-xl"></i>
                         </a>
                     </div>
-                    <p class="text-gray-500">© 2023 Smart Home Group. Все права защищены.</p>
+                    <p class="text-gray-500">© 2025 Все права защищены. Kratzke & Vinogradov SmartHome Group</p>
                 </div>
             </div>
         </div>
@@ -630,6 +590,13 @@
                 observer.observe(el);
             });
         });
+
+        document.querySelectorAll('.card-flip').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+
 
         document.addEventListener("DOMContentLoaded", () => {
             const revealElements = document.querySelectorAll(".reveal");
