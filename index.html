@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Group | Инновационные решения для умного дома</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                fontFamily: {
+                    sans: ['"Exo 2"', 'sans-serif'],
+                },
+                colors: {
+                    primary: '#00c6ff',
+                    secondary: '#0072ff',
+                    dark: '#0a0e17',
+                },
+                animation: {
+                    'float': 'float 6s ease-in-out infinite',
+                },
+                keyframes: {
+                    float: {
+                        '0%, 100%': { transform: 'translateY(0)' },
+                        '50%': { transform: 'translateY(-20px)' },
+                    }
+                },
+                // Добавьте это для поддержки задержки анимации
+                animationDelay: {
+                    '2000': '2000ms',
+                }
+            }
+        }
+    }
+</script>
+    <style>
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-flip-inner {
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+        .card-flip:hover .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-flip-front, .card-flip-back {
+            backface-visibility: hidden;
+        }
+        .card-flip-back {
+            transform: rotateY(180deg);
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+        .neon-text {
+            text-shadow: 0 0 10px rgba(0, 198, 255, 0.7), 0 0 20px rgba(0, 114, 255, 0.5);
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        /* Добавьте эти стили в head */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+    
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes zoomIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fadeInUp { animation: fadeInUp 1s ease-out forwards; }
+        .animate-fadeIn   { animation: fadeIn 1s ease-out forwards; }
+        .animate-zoomIn   { animation: zoomIn 0.8s ease-out forwards; }
+
+
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-glow::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shine 2.5s infinite;
+        }
+        @keyframes shine {
+            0% { left: -75%; }
+            100% { left: 125%; }
+        }
+    </style>
+
+    <style>
+    /* базовое состояние (скрыты до анимации) */
+    .reveal, .reveal-child { opacity: 0; will-change: transform, opacity; }
+
+    /* keyframes */
+    @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(28px); }
+    100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn { 0%{opacity:0} 100%{opacity:1} }
+    @keyframes fadeLeft { 0%{opacity:0; transform:translateX(24px)} 100%{opacity:1; transform:translateX(0)} }
+    @keyframes fadeRight { 0%{opacity:0; transform:translateX(-24px)} 100%{opacity:1; transform:translateX(0)} }
+    @keyframes zoomIn { 0%{opacity:0; transform:scale(0.96)} 100%{opacity:1; transform:scale(1)} }
+
+    /* классы анимаций (используют CSS-переменную --delay) */
+    .fade-up { animation: fadeUp 700ms cubic-bezier(.22,.9,.37,1) both; animation-delay: var(--delay, 0ms); }
+    .fade-in { animation: fadeIn 600ms ease-out both; animation-delay: var(--delay, 0ms); }
+    .fade-left { animation: fadeLeft 700ms cubic-bezier(.22,.9,.37,1) both; animation-delay: var(--delay, 0ms); }
+    .fade-right{ animation: fadeRight 700ms cubic-bezier(.22,.9,.37,1) both; animation-delay: var(--delay, 0ms); }
+    .zoom-in { animation: zoomIn 600ms cubic-bezier(.22,.9,.37,1) both; animation-delay: var(--delay, 0ms); }
+
+    /* небольшая настройка группы */
+    .reveal-group { perspective: 1000px; }
+
+    /* уважение к настройкам пользователя */
+    @media (prefers-reduced-motion: reduce) {
+    .fade-up, .fade-in, .fade-left, .fade-right, .zoom-in {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    }
+    </style>
+
+</head>
+<body class="bg-dark text-gray-100 font-sans overflow-x-hidden">
+
+    <!-- Слой с частицами на фоне -->
+    <canvas id="particles" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-dark/90 backdrop-blur-md border-b border-gray-800">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Логотип слева -->
+        <a href="#" class="flex items-center gap-2 group">
+            <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                <i class="fas fa-home text-white text-lg"></i>
+            </div>
+            <span class="text-xl font-bold text-white group-hover:text-primary transition">
+                SmartHome<span class="text-primary">Group</span>
+            </span>
+        </a>
+
+        <!-- Центральная навигация -->
+        <nav class="hidden md:flex items-center gap-8">
+            <a href="#" class="text-gray-300 hover:text-primary transition">Главная</a>
+            
+            <!-- Выпадающее меню "Наши проекты" -->
+            <div class="relative group">
+                <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
+                    Наши проекты
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Отели</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Виллы</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Квартиры</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Концепты</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Сценарии</a>
+                </div>
+            </div>
+            
+            <!-- Выпадающее меню "О компании" -->
+            <div class="relative group">
+                <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
+                    О компании
+                    <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+                <div class="absolute left-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">KNX Smart Home</a>
+                    <a href="#" class="block px-4 py-3 hover:bg-gray-700">Wi-Fi Smart Home</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Правый блок (WhatsApp, Переводчик, Бургер) -->
+        <div class="flex items-center gap-4">
+            <!-- WhatsApp -->
+            <a href="#" class="flex items-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
+                <i class="fab fa-whatsapp text-xl"></i>
+                <span class="hidden md:inline">WhatsApp</span>
+            </a>
+
+            <!-- Переводчик -->
+            <div class="relative group">
+                <button class="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+                    <i class="fas fa-globe text-xl"></i>
+                    <span class="hidden md:inline">Язык</span>
+                </button>
+                <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
+                        <span class="fi fi-ru"></span>
+                        <span>Русский</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
+                        <span class="fi fi-de"></span>
+                        <span>Deutsch</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
+                        <span class="fi fi-us"></span>
+                        <span>English</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 hover:bg-gray-700">
+                        <span class="fi fi-fr"></span>
+                        <span>Français</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Бургер меню -->
+            <button class="md:hidden text-gray-300 hover:text-primary transition">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center overflow-hidden">
+        <!-- Фоновое изображение дома с бассейном и джакузи -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                alt="Дом с бассейном и джакузи" 
+                class="w-full h-full object-cover">
+            <!-- Затемнение изображения (уменьшаем непрозрачность) -->
+            <div class="absolute inset-0 bg-gradient-to-b from-dark/70 to-dark/90"></div>
+        </div>
+
+        <!-- Анимированные элементы -->
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary blur-[100px] opacity-20 rounded-full parallax" data-speed="5"></div>
+        <div class="absolute top-1/3 right-1/4 w-48 h-48 rounded-full bg-secondary blur-[80px] opacity-20 animate-float animation-delay-2000"></div>
+
+        <div class="container mx-auto px-4 relative z-10 py-20">
+            <div class="max-w-2xl">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 neon-text">
+                    <span class="block">Kratzke Hotel Solutions</span>
+                    <span class="text-primary">Умный дом</span>
+                </h1>
+                <p class="text-xl md:text-2xl mb-8 text-gray-300">
+                    Технологии немецкого качества в Турции: премиум квартиры, хай-тек виллы, ультра современные отели
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#" class="px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold text-lg btn-glow">
+                        Узнать больше
+                    </a>
+
+                    <a href="#" class="px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-lg font-bold text-lg hover:bg-primary/10 transition">
+                        Консультация
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Наши услуги -->
+    <section class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Наши услуги</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Карточка 1: Smart Hotel System -->
+                <div class="card-flip h-[500px]">
+                    <div class="card-flip-inner w-full h-full">
+                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Smart Hotel System</h3>
+                                <p class="text-gray-300 mb-4">Под ключ</p>
+                                <p class="text-gray-400 mb-6">От плана отеля до реализации: электрика и дизайн-проект</p>
+                                <button class="w-full py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-bold hover:opacity-90 transition">
+                                    ОТЕЛЬ
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-primary flex items-center justify-center p-6">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold mb-4 text-primary">Smart Hotel System</h3>
+                                <ul class="space-y-2 text-gray-300 mb-6">
+                                    <li>• Автоматизация номеров</li>
+                                    <li>• Умное управление энергией</li>
+                                    <li>• Интегрированные системы безопасности</li>
+                                    <li>• Персонализированный сервис</li>
+                                </ul>
+                                <button class="px-6 py-3 bg-primary rounded-lg font-bold text-dark hover:bg-primary/90 transition">
+                                    Подробнее
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 2: Smart Villa System -->
+                <div class="card-flip h-[500px]">
+                    <div class="card-flip-inner w-full h-full">
+                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Smart Villa System</h3>
+                                <p class="text-gray-300 mb-4">Полное управление</p>
+                                <p class="text-gray-400 mb-6">Управляйте вашей виллой всегда с помощью телефона</p>
+                                <button class="w-full py-3 bg-gradient-to-r from-red-500 to-red-700 rounded-lg font-bold hover:opacity-90 transition">
+                                    ВИЛЛА
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-red-500 flex items-center justify-center p-6">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold mb-4 text-red-400">Smart Villa System</h3>
+                                <ul class="space-y-2 text-gray-300 mb-6">
+                                    <li>• Управление климатом и светом</li>
+                                    <li>• Умные системы орошения</li>
+                                    <li>• Интеграция с бассейном и сауной</li>
+                                    <li>• Полная безопасность территории</li>
+                                </ul>
+                                <button class="px-6 py-3 bg-red-500 rounded-lg font-bold text-white hover:bg-red-600 transition">
+                                    Подробнее
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Карточка 3: Smart Home System -->
+                <div class="card-flip h-[500px]">
+                    <div class="card-flip-inner w-full h-full">
+                        <div class="card-flip-front w-full h-full relative rounded-2xl overflow-hidden border border-gray-700">
+                            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1605146769289-440113cc3d00?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80')] bg-cover bg-center"></div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-6">
+                                <h3 class="text-2xl font-bold mb-2">Smart Home System</h3>
+                                <p class="text-gray-300 mb-4">Апартаменты</p>
+                                <p class="text-gray-400 mb-6">Управление и безопасность со смартфона</p>
+                                <button class="w-full py-3 bg-gradient-to-r from-purple-500 to-purple-700 rounded-lg font-bold hover:opacity-90 transition">
+                                    КВАРТИРА
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-flip-back w-full h-full absolute top-0 left-0 bg-gradient-to-br from-gray-900 to-dark rounded-2xl overflow-hidden border border-purple-500 flex items-center justify-center p-6">
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold mb-4 text-purple-400">Smart Home System</h3>
+                                <ul class="space-y-2 text-gray-300 mb-6">
+                                    <li>• Умное освещение и климат</li>
+                                    <li>• Голосовое управление</li>
+                                    <li>• Системы безопасности и видеонаблюдение</li>
+                                    <li>• Энергоэффективные решения</li>
+                                </ul>
+                                <button class="px-6 py-3 bg-purple-500 rounded-lg font-bold text-white hover:bg-purple-600 transition">
+                                    Подробнее
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Заказать систему -->
+    <section class="py-20 bg-gradient-to-br from-gray-900 to-dark">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Заказать систему умного дома</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Шаг 1 -->
+                <div class="bg-gray-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-primary rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-white">1</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Позвони или напиши в WhatsApp</h3>
+                        <p class="text-gray-400">Свяжитесь с нами любым удобным способом для первичной консультации</p>
+                    </div>
+                </div>
+                
+                <!-- Шаг 2 -->
+                <div class="bg-gray-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-red-500 rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-white">2</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Опиши задачу</h3>
+                        <p class="text-gray-400">Расскажите о вашем проекте и оборудовании, которое вас интересует</p>
+                    </div>
+                </div>
+                
+                <!-- Шаг 3 -->
+                <div class="bg-gray-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-purple-500 rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-white">3</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Получи расчет стоимости</h3>
+                        <p class="text-gray-400">Мы подготовим для вас детальный расчет в течение 24 часов</p>
+                    </div>
+                </div>
+                
+                <!-- Шаг 4 -->
+                <div class="bg-gray-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -top-4 -right-4 w-24 h-24 bg-green-500 rounded-full opacity-10"></div>
+                    <div class="relative z-10">
+                        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center mb-6">
+                            <span class="text-2xl font-bold text-white">4</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Получи готовый проект</h3>
+                        <p class="text-gray-400">Наслаждайтесь современным умным домом под ключ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Наши проекты -->
+    <section class="py-20">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Наши проекты</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-group" data-stagger="140">
+            <!-- Проект 1 -->
+            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+                <img src='https://images.unsplash.com/photo-1574362848149-11496d93a7c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' alt="Luxury Resort" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
+                    <div class="p-6 w-full text-center">
+                        <h3 class="text-xl font-bold">Luxury Resort Antalya</h3>
+                        <p class="text-gray-300">Полная автоматизация</p>
+                    </div>
+                </div>
+                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2">Luxury Resort Antalya</h3>
+                        <p class="text-gray-300">250 номеров • Управление энергопотреблением</p>
+                        <button class="mt-4 px-6 py-2 bg-primary rounded-lg font-bold hover:bg-primary/90 transition">
+                            Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Проект 2 -->
+            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+                <img src='https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' alt="Villa Mediterraneo" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
+                    <div class="p-6 w-full text-center">
+                        <h3 class="text-xl font-bold">Villa Mediterraneo</h3>
+                        <p class="text-gray-300">Умный дом премиум</p>
+                    </div>
+                </div>
+                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2 text-red-400">Villa Mediterraneo</h3>
+                        <p class="text-gray-300">Управление территорией • Интеграция бассейна • Умная кухня</p>
+                        <button class="mt-4 px-6 py-2 bg-red-500 rounded-lg font-bold hover:bg-red-600 transition">
+                            Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Проект 3 -->
+            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+                <img src='https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80' alt="Skyline Apartments" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
+                    <div class="p-6 w-full text-center">
+                        <h3 class="text-xl font-bold">Skyline Apartments</h3>
+                        <p class="text-gray-300">Хай-тек решения</p>
+                    </div>
+                </div>
+                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
+                    <div class="text-center">
+                        <h3 class="text-xl font-bold mb-2 text-purple-400">Skyline Apartments</h3>
+                        <p class="text-gray-300">Голосовое управление • Умное освещение • Безопасность</p>
+                        <button class="mt-4 px-6 py-2 bg-purple-500 rounded-lg font-bold hover:bg-purple-600 transition">
+                            Подробнее
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .card-zoom {
+        transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+        transform-style: preserve-3d;
+        will-change: transform;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .card-zoom:hover {
+        transform: scale(1.05) translateZ(20px);
+        box-shadow: 0 25px 50px -12px rgba(0, 198, 255, 0.25);
+        z-index: 10;
+    }
+    .card-zoom .overlay {
+        transition: opacity 0.5s ease-out, background-color 0.5s ease-out;
+        background: linear-gradient(to top, rgba(10, 14, 23, 0.9) 0%, rgba(10, 14, 23, 0.7) 50%, rgba(10, 14, 23, 0.5) 100%);
+    }
+    .card-zoom:hover .overlay {
+        opacity: 1;
+        background: rgba(10, 14, 23, 0.95);
+    }
+    .card-zoom img {
+        transition: transform 0.5s ease-out;
+    }
+    .card-zoom:hover img {
+        transform: scale(1.1);
+    }
+</style>
+
+    <!-- Футер -->
+    <footer class="bg-gray-900 py-12 border-t border-gray-800">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <a href="#" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-home text-white text-lg"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white group-hover:text-primary transition">
+                            SmartHome<span class="text-primary">Group</span>
+                        </span>
+                    </a>
+                    <p class="mt-4 text-gray-400 max-w-md">Инновационные решения для умных домов, отелей и вилл в Турции. Немецкое качество, современные технологии.</p>
+                </div>
+                
+                <div class="flex flex-col items-center md:items-end">
+                    <div class="flex gap-4 mb-6">
+                        <a href="#" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center hover:bg-green-600 transition">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                        <a href="#" class="w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-500">© 2023 Smart Home Group. Все права защищены.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация появления элементов при скролле
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll('.scroll-animate');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeInUp');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            animatedElements.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                observer.observe(el);
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const revealElements = document.querySelectorAll(".reveal");
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const animation = entry.target.dataset.animate || "animate-fadeInUp";
+                        entry.target.classList.add(animation);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+
+            revealElements.forEach(el => {
+                el.style.opacity = "0";
+                observer.observe(el);
+            });
+        });
+        document.addEventListener("mousemove", e => {
+            document.querySelectorAll(".parallax").forEach(layer => {
+                const speed = layer.getAttribute("data-speed");
+                const x = (window.innerWidth - e.pageX * speed) / 100;
+                const y = (window.innerHeight - e.pageY * speed) / 100;
+                layer.style.transform = `translateX(${x}px) translateY(${y}px)`;
+            });
+        });
+        
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = Array.from({ length: 50 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 2 + 1,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        }));
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(0,198,255,0.7)';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const observerOptions = { threshold: 0.12 };
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+
+        // Если это группа — анимируем её детей по очереди
+        if (el.classList.contains('reveal-group')) {
+            const stagger = parseInt(el.datasetStagger) || 120; // ms между элементами
+            const children = el.querySelectorAll('.reveal-child');
+            children.forEach((child, i) => {
+            const baseDelay = child.datasetDelay ? parseInt(child.datasetDelay) : i * stagger;
+            const animClass = child.datasetAnimate || 'fade-up';
+            child.style.setProperty('--delay', baseDelay + 'ms');
+            child.classList.add(animClass);
+            });
+            obs.unobserve(el);
+            return;
+        }
+
+        // Одиночный элемент
+        const delay = el.datasetDelay ? parseInt(el.datasetDelay) : 0;
+        const anim = el.datasetAnimate || 'fade-up';
+        el.style.setProperty('--delay', delay + 'ms');
+        el.classList.add(anim);
+        obs.unobserve(el);
+        });
+    }, observerOptions);
+
+    // Наблюдаем за элементами
+    document.querySelectorAll('.reveal, .reveal-group').forEach(el => revealObserver.observe(el));
+    // Если есть isolated reveal-child (не в группе), тоже наблюдаем
+    document.querySelectorAll('.reveal-child').forEach(child => {
+        if (!child.closest('.reveal-group')) revealObserver.observe(child);
+    });
+    });
+    </script>
+
+</body>
+</html>
