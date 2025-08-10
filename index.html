@@ -173,70 +173,76 @@
     <!-- Слой с частицами на фоне -->
     <canvas id="particles" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-dark/90 backdrop-blur-md border-b border-gray-800">
-    <div class="container mx-auto px-2 py-2 flex justify-between items-center text-sm">
-        
-        <!-- Логотип -->
-        <a href="#" class="flex items-center gap-1 group">
-            <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <i class="fas fa-home text-white text-sm"></i>
-            </div>
-            <span class="font-bold text-white group-hover:text-primary transition">
-                SmartHome<span class="text-primary">Group</span>
-            </span>
-        </a>
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-dark/90 backdrop-blur-md border-b border-gray-800">
+  <div class="container mx-auto px-2 md:px-4 py-2 md:py-3 flex justify-between items-center text-sm md:text-base">
 
-        <!-- Навигация -->
-        <nav class="hidden md:flex items-center gap-4">
-            <a href="#" class="text-gray-300 hover:text-primary transition">Главная</a>
-            <div class="relative group">
-                <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
-                    Наши проекты <i class="fas fa-chevron-down text-[10px]"></i>
-                </button>
-                <div class="absolute left-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Отели</a>
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Виллы</a>
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Квартиры</a>
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Концепты</a>
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Сценарии</a>
-                </div>
-            </div>
-            <div class="relative group">
-                <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
-                    О компании <i class="fas fa-chevron-down text-[10px]"></i>
-                </button>
-                <div class="absolute left-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">KNX Smart Home</a>
-                    <a href="#" class="block px-3 py-2 hover:bg-gray-700">Wi-Fi Smart Home</a>
-                </div>
-            </div>
-        </nav>
+    <!-- Лого -->
+    <a href="#" class="flex items-center gap-1 md:gap-2 group">
+      <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+        <i class="fas fa-home text-white text-sm md:text-lg"></i>
+      </div>
+<span class="font-bold text-white group-hover:text-primary transition text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px]">
+  SmartHome<span class="text-primary">Group</span>
+</span>
 
-        <!-- Правый блок -->
-        <div class="flex items-center gap-2">
-            <a href="#" class="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 rounded-lg transition">
-                <i class="fab fa-whatsapp text-base"></i>
-                <span class="hidden md:inline">WA</span>
-            </a>
-            <div class="relative group">
-                <button class="flex items-center gap-1 px-2 py-1 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
-                    <i class="fas fa-globe text-base"></i>
-                    <span class="hidden md:inline">Яз</span>
-                </button>
-                <div class="absolute right-0 mt-1 w-40 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs">
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-ru"></span>Рус</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-de"></span>De</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-us"></span>En</a>
-                    <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-fr"></span>Fr</a>
-                </div>
-            </div>
-            <button class="md:hidden text-gray-300 hover:text-primary transition">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+    </a>
+
+    <!-- Навигация -->
+    <nav class="hidden md:flex items-center gap-4 md:gap-8">
+      <a href="#" class="text-gray-300 hover:text-primary transition">Главная</a>
+
+      <div class="relative group">
+        <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
+          Наши проекты <i class="fas fa-chevron-down text-[10px] md:text-xs"></i>
+        </button>
+        <div class="absolute left-0 mt-1 md:mt-2 w-40 md:w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs md:text-sm">
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Отели</a>
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Виллы</a>
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Квартиры</a>
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Концепты</a>
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Сценарии</a>
         </div>
+      </div>
+
+      <div class="relative group">
+        <button class="text-gray-300 hover:text-primary transition flex items-center gap-1">
+          О компании <i class="fas fa-chevron-down text-[10px] md:text-xs"></i>
+        </button>
+        <div class="absolute left-0 mt-1 md:mt-2 w-40 md:w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs md:text-sm">
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">KNX Smart Home</a>
+          <a href="#" class="block px-3 py-2 hover:bg-gray-700">Wi-Fi Smart Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Правый блок -->
+    <div class="flex items-center gap-2 md:gap-4">
+      <a href="#" class="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-2 bg-green-600 hover:bg-green-700 rounded-lg transition">
+        <i class="fab fa-whatsapp text-base md:text-xl"></i>
+        <span class="hidden md:inline">WhatsApp</span>
+      </a>
+
+      <div class="relative group">
+        <button class="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
+          <i class="fas fa-globe text-base md:text-xl"></i>
+          <span class="hidden md:inline">Язык</span>
+        </button>
+        <div class="absolute right-0 mt-1 md:mt-2 w-40 md:w-48 bg-gray-800 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 text-xs md:text-sm">
+          <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-ru"></span>Русский</a>
+          <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-de"></span>Deutsch</a>
+          <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-us"></span>English</a>
+          <a href="#" class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700"><span class="fi fi-fr"></span>Français</a>
+        </div>
+      </div>
+
+      <button class="md:hidden text-gray-300 hover:text-primary transition">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
     </div>
+  </div>
 </header>
+
 
 
     <!-- Hero Section -->
