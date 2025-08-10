@@ -236,9 +236,70 @@
         </div>
       </div>
 
-      <button class="md:hidden text-gray-300 hover:text-primary transition">
-        <i class="fas fa-bars text-xl"></i>
-      </button>
+<!-- Кнопка открытия меню (бургер) -->
+<button id="burgerBtn" class="md:hidden text-gray-300 hover:text-primary transition">
+    <i class="fas fa-bars text-2xl"></i>
+</button>
+
+<!-- Выезжающее меню -->
+<div id="sideMenu" class="fixed top-0 left-0 h-screen w-80 max-w-full bg-gradient-to-b from-dark via-gray-900 to-dark shadow-2xl transform -translate-x-full transition-transform duration-500 z-[9999] overflow-hidden">
+    <!-- Верхняя панель с крестиком -->
+    <div class="flex justify-end p-4">
+        <button id="closeMenu" class="text-gray-400 hover:text-primary transition text-3xl">
+            &times;
+        </button>
+    </div>
+
+    <!-- Список -->
+    <nav class="flex flex-col space-y-6 px-6 text-lg font-semibold tracking-wide">
+        <a href="#" class="hover:text-primary neon-text transition">HOME</a>
+        <a href="#" class="hover:text-primary neon-text transition">PKW LIEFERUNG</a>
+        <a href="#" class="hover:text-primary neon-text transition">TOP SERVICES</a>
+        <a href="#" class="hover:text-primary neon-text transition">UNSERE STÄRKE</a>
+        <a href="#" class="hover:text-primary neon-text transition">DIENSTLEISTUNGEN</a>
+        <a href="#" class="hover:text-primary neon-text transition">FOTOGALLERIE</a>
+        <a href="#" class="hover:text-primary neon-text transition">IMPRESSUM</a>
+        <p class="text-sm text-gray-400 pt-6 border-t border-gray-700">
+            ® среди наших клиентов - правительственные чиновники, дипломаты, олимпийские чемпионы, известные деятели культуры и коллекционеры
+        </p>
+    </nav>
+</div>
+
+<!-- Полупрозрачный фон -->
+<div id="menuOverlay" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none transition-opacity duration-500 z-[9998]"></div>
+
+<style>
+    /* Неоновый текст */
+    .neon-text {
+        text-shadow: 0 0 5px rgba(0, 198, 255, 0.7),
+                     0 0 10px rgba(0, 198, 255, 0.5),
+                     0 0 20px rgba(0, 114, 255, 0.4);
+    }
+</style>
+
+<script>
+    const burgerBtn = document.getElementById("burgerBtn");
+    const sideMenu = document.getElementById("sideMenu");
+    const closeMenu = document.getElementById("closeMenu");
+    const menuOverlay = document.getElementById("menuOverlay");
+
+    function openMenu() {
+        sideMenu.classList.remove("-translate-x-full");
+        menuOverlay.classList.remove("opacity-0", "pointer-events-none");
+        document.body.style.overflow = "hidden"; // убираем прокрутку
+    }
+
+    function closeSideMenu() {
+        sideMenu.classList.add("-translate-x-full");
+        menuOverlay.classList.add("opacity-0", "pointer-events-none");
+        document.body.style.overflow = ""; // возвращаем прокрутку
+    }
+
+    burgerBtn.addEventListener("click", openMenu);
+    closeMenu.addEventListener("click", closeSideMenu);
+    menuOverlay.addEventListener("click", closeSideMenu);
+</script>
+
     </div>
   </div>
 </header>
@@ -450,7 +511,7 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-group" data-stagger="240">
             <!-- Проект 1 -->
-            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+            <div class="card-zoom h-[520px] rounded-2xl overflow-hidden relative card reveal-child">
                 <img src='/4.jpg' alt="Luxury Resort" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
@@ -470,7 +531,7 @@
             </div>
             
             <!-- Проект 2 -->
-            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+            <div class="card-zoom h-[520px]  rounded-2xl overflow-hidden relative card reveal-child">
                 <img src='/5.jpeg' alt="Villa Mediterraneo" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
@@ -490,7 +551,7 @@
             </div>
             
             <!-- Проект 3 -->
-            <div class="card-zoom h-80 rounded-2xl overflow-hidden relative card reveal-child">
+            <div class="card-zoom h-[520px]  rounded-2xl overflow-hidden relative card reveal-child">
                 <img src='/6.jpg' alt="Skyline Apartments" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
