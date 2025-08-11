@@ -515,24 +515,25 @@
     </section>
 
     <!-- Наши проекты -->
-    <section class="py-20">
+   <section class="py-20">
     <div class="container mx-auto px-4">
         <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 neon-text">Наши проекты</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-group" data-stagger="240">
             <!-- Проект 1 -->
-            <div class="card-zoom h-[520px] rounded-2xl overflow-hidden relative card reveal-child">
-                <img src='/4.jpg' alt="Luxury Resort" class="w-full h-full object-cover">
+            <div class="card-zoom h-[520px] rounded-2xl overflow-hidden relative card reveal-child" onclick="toggleOverlay(this)">
+                <img src='/4.jpg' alt="Luxury Resort" class="w-full h-full object-cover pointer-events-none">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
                         <h3 class="text-xl font-bold">Luxury Resort Antalya</h3>
                         <p class="text-gray-300">Монтаж KNX севрера</p>
                     </div>
                 </div>
-                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
-                    <div class="text-center">
+                <div class="overlay absolute inset-0 bg-dark/95 opacity-0 flex items-center justify-center p-6 transition-opacity duration-300">
+                    <button class="absolute top-2 right-4 text-white text-4xl z-10" onclick="event.stopPropagation(); this.parentElement.style.opacity='0'">×</button>
+                    <div class="text-center relative">
                         <h3 class="text-xl font-bold mb-2">Luxury Resort Antalya</h3>
-                        <p class="text-gray-300">Монтаж KNX севрера под ключ</p>
+                        <p class="text-gray-300 mb-4">Монтаж KNX севрера под ключ</p>
                         <button class="mt-4 px-6 py-2 bg-primary rounded-lg font-bold hover:bg-primary/90 transition">
                             Подробнее
                         </button>
@@ -541,18 +542,19 @@
             </div>
             
             <!-- Проект 2 -->
-            <div class="card-zoom h-[520px]  rounded-2xl overflow-hidden relative card reveal-child">
-                <img src='/5.jpeg' alt="Villa Mediterraneo" class="w-full h-full object-cover">
+            <div class="card-zoom h-[520px] rounded-2xl overflow-hidden relative card reveal-child" onclick="toggleOverlay(this)">
+                <img src='/5.jpeg' alt="Villa Mediterraneo" class="w-full h-full object-cover pointer-events-none">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
                         <h3 class="text-xl font-bold">Villa Mediterraneo</h3>
                         <p class="text-gray-300">Умный дом премиум</p>
                     </div>
                 </div>
-                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
-                    <div class="text-center">
+                <div class="overlay absolute inset-0 bg-dark/95 opacity-0 flex items-center justify-center p-6 transition-opacity duration-300">
+                    <button class="absolute top-2 right-4 text-white text-4xl z-10" onclick="event.stopPropagation(); this.parentElement.style.opacity='0'">×</button>
+                    <div class="text-center relative">
                         <h3 class="text-xl font-bold mb-2 text-red-400">Villa Mediterraneo</h3>
-                        <p class="text-gray-300">Управление территорией • Интеграция бассейна • Умная кухня</p>
+                        <p class="text-gray-300 mb-4">Управление территорией • Интеграция бассейна • Умная кухня</p>
                         <button class="mt-4 px-6 py-2 bg-red-500 rounded-lg font-bold hover:bg-red-600 transition">
                             Подробнее
                         </button>
@@ -561,18 +563,19 @@
             </div>
             
             <!-- Проект 3 -->
-            <div class="card-zoom h-[520px]  rounded-2xl overflow-hidden relative card reveal-child">
-                <img src='/6.jpg' alt="Skyline Apartments" class="w-full h-full object-cover">
+            <div class="card-zoom h-[520px] rounded-2xl overflow-hidden relative card reveal-child" onclick="toggleOverlay(this)">
+                <img src='/6.jpg' alt="Skyline Apartments" class="w-full h-full object-cover pointer-events-none">
                 <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent flex items-end">
                     <div class="p-6 w-full text-center">
                         <h3 class="text-xl font-bold">Skyline Apartments</h3>
                         <p class="text-gray-300">Хай-тек решение</p>
                     </div>
                 </div>
-                <div class="overlay absolute inset-0 bg-dark opacity-0 flex items-center justify-center p-6">
-                    <div class="text-center">
+                <div class="overlay absolute inset-0 bg-dark/95 opacity-0 flex items-center justify-center p-6 transition-opacity duration-300">
+                    <button class="absolute top-2 right-4 text-white text-4xl z-10" onclick="event.stopPropagation(); this.parentElement.style.opacity='0'">×</button>
+                    <div class="text-center relative">
                         <h3 class="text-xl font-bold mb-2 text-purple-400">Skyline Apartments</h3>
-                        <p class="text-gray-300">Проектирование и реализация на объекте</p>
+                        <p class="text-gray-300 mb-4">Проектирование и реализация на объекте</p>
                         <button class="mt-4 px-6 py-2 bg-purple-500 rounded-lg font-bold hover:bg-purple-600 transition">
                             Подробнее
                         </button>
@@ -582,6 +585,45 @@
         </div>
     </div>
 </section>
+
+<script>
+function toggleOverlay(card) {
+    const overlay = card.querySelector('.overlay');
+    overlay.style.opacity = overlay.style.opacity === '1' ? '0' : '1';
+    
+    // Блокируем/разблокируем скролл страницы при открытии оверлея
+    document.body.style.overflow = overlay.style.opacity === '1' ? 'hidden' : '';
+}
+
+// Закрытие оверлея при клике вне контента
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.overlay') && !e.target.closest('.card')) {
+        document.querySelectorAll('.overlay').forEach(overlay => {
+            overlay.style.opacity = '0';
+            document.body.style.overflow = '';
+        });
+    }
+});
+</script>
+
+<style>
+.overlay {
+    backdrop-filter: blur(2px);
+}
+
+.card {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+</style>
 
 <style>
     .card-zoom {
