@@ -112,6 +112,17 @@
         .animate-fadeIn   { animation: fadeIn 1s ease-out forwards; }
         .animate-zoomIn   { animation: zoomIn 0.8s ease-out forwards; }
 
+@keyframes hover-bounce {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.card-flip:hover {
+  animation: hover-bounce 0.4s ease;
+}
+
+
 
         .btn-glow {
             position: relative;
@@ -182,7 +193,7 @@
       <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
         <i class="fas fa-home text-white text-sm md:text-lg"></i>
       </div>
-<span class="font-bold text-white group-hover:text-primary transition text-[14px] sm:text-[16px] md:text-[18px] lg:text-[20px]">
+<span class="font-bold text-white group-hover:text-primary transition text-[18px] sm:text-[16px] md:text-[18px] lg:text-[20px]">
   SmartHome<span class="text-primary">Group</span>
 </span>
 
